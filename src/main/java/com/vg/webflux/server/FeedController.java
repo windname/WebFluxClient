@@ -29,8 +29,9 @@ public class FeedController {
 
     @GetMapping("/old/{id}")
     private Feed getOldFeedById(@PathVariable Integer id) {
-        Optional<Feed> feedOpt = Optional.of(feeds.get(id));
-        return feedOpt.isPresent()?feedOpt.get():new Feed(0,"0");
+        Optional<Feed> feedOpt = Optional.ofNullable(feeds.get(id));
+        feedOpt.orElseThrow(() -> new MissingFeedException("cannot find feed"));
+        return feedOpt.get();
     }
 
     @GetMapping("/all")
