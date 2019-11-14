@@ -6,6 +6,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author vgrigoriev (vladimir.grigoriev@codefactorygroup.com) 11/6/2019
@@ -20,10 +22,17 @@ public class FluxTest {
                 .map(String::toUpperCase);
         upper.subscribe(System.out::println);
 
+        // create three lists with numbers from 1 to 10
+        Flux.range(1, 10)
+                .parallel(3)
+                .collect(ArrayList::new, List::add)
+                .subscribe(list -> System.out.print("List=" + list));
+
         // infinite flux every 100 ms new number
-        Flux.interval(Duration.ofMillis(100)).
-                map(i -> "Tick : " + i).
-                subscribe(System.out::println);
+//        Flux<Long> disposableFlux =
+                Flux.interval(Duration.ofMillis(100)).
+                map(i -> "Tick : " + i)
+                .subscribe(System.out::println);
 
         // log method helps to output elements before program stop
         Disposable disposable = flux.log().parallel()
@@ -43,6 +52,8 @@ public class FluxTest {
                 })
                 .map(n -> { System.out.println("In map n=" + n); return n; })
                 .subscribe(System.out::println);
+
+
 
         try {
             Thread.sleep(1000);
