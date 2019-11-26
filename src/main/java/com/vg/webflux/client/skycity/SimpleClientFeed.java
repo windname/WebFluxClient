@@ -15,7 +15,7 @@ import java.util.Map;
  */
 
 @Log
-public class LiveFeed {
+public class SimpleClientFeed {
 
     Map<Integer, Integer> originMap = new HashMap() {{
         put(2,2);
@@ -24,17 +24,10 @@ public class LiveFeed {
 
     public static void main(String[] args) {
 
-        LiveFeed liveFeed = new LiveFeed();
+        SimpleClientFeed liveFeed = new SimpleClientFeed();
 
 //        liveFeed.processVersion1();
         liveFeed.processVersion2();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void processVersion1() {

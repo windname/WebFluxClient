@@ -2,6 +2,6 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml" />
 
-    <!--disable spring log-->
-    <logger name="org.springframework" level="OFF"/>
+    <!--disable spring log put level off -->
+    <logger name="org.springframework" level="ON"/>
 </configuration>
