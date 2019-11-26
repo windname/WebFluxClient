@@ -1,6 +1,8 @@
 package com.vg.webflux.client.skycity;
 
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -17,6 +19,7 @@ public class FeedImporter {
 
         FeedImporter clientFeed = new FeedImporter();
         clientFeed.separateRequests(client);
+        clientFeed.parallellRequest(client);
 
 
         try {
@@ -34,7 +37,7 @@ public class FeedImporter {
     }
 
     public void separateRequests(WebClient client) {
-        client.get().uri("/index", 2)
+        client.get().uri("/index")
                 .retrieve()
                 .bodyToMono(Map.class)
                 .subscribe(index -> System.out.println("events are " + index.keySet()));
@@ -45,7 +48,20 @@ public class FeedImporter {
                 .subscribe(feed -> System.out.println("feed is " + feed));
     }
 
-    public void sequentialRequest(WebClient client) {
+    public void parallellRequest(WebClient client) {
+        Mono<Map> events = client.get().uri("/index")
+                .retrieve()
+                .bodyToMono(Map.class);
+
+        events.flatMap(map -> Mono.just(map.keySet()))
+                .flatMapMany(Flux::fromIterable)
+                .parallel()
+                .flatMap(event ->
+                        client.get().uri("/feed/{id}", event)
+                                .retrieve()
+                                .bodyToMono(Integer.class)
+                ).subscribe(feed -> System.out.println("Parallel Feed is " + feed));
+
 
     }
 }

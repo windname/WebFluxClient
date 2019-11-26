@@ -1,7 +1,6 @@
 package com.vg.webflux.client.magic;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * @author vgrigoriev (vladimir.grigoriev@codefactorygroup.com) 11/14/2019
@@ -9,14 +8,14 @@ import java.util.function.Supplier;
 
 
 public class Observable<T> {
-    private Function<Observer<T>,Subscription> _subscribe;
+    private Function<Observer<T>,Subscription> subscribe;
 
     public Observable(Function<Observer<T> , Subscription> subscribeParam) {
-        this._subscribe = subscribeParam;
+        this.subscribe = subscribeParam;
     }
 
     public Subscription subscribe(Observer<T> observer) {
-        return this._subscribe.apply(observer);
+        return this.subscribe.apply(observer);
     }
 
     // oprator map
