@@ -2,10 +2,7 @@ package com.vg.webflux.client;
 
 import com.vg.webflux.server.Feed;
 import com.vg.webflux.server.MissingFeedException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ReactiveHttpOutputMessage;
+import org.springframework.http.*;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -65,7 +62,8 @@ public class SimpleFeedClient {
                 .get()
                 .uri("/old/{id}", 5)
                 .retrieve()
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new MissingFeedException("cannot read feed")))
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        clientResponse -> Mono.error(new MissingFeedException("cannot read feed")))
                 .bodyToMono(Feed.class)
                 .onErrorMap(Throwable::new);
 

@@ -18,7 +18,6 @@ public class Observable<T> {
         return this.subscribe.apply(observer);
     }
 
-    // oprator map
     public <U> Observable<U> map( Function<T, U> projection) {
 
         return

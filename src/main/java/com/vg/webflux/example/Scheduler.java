@@ -1,4 +1,4 @@
-package com.vg.webflux.client;
+package com.vg.webflux.example;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +35,7 @@ public class Scheduler {
 
         separateSample();
 
-        // everything in parallel scheduler and myliple threads
+        // everything in parallel scheduler and multiple threads
         Flux.range(1, 3)
                 .parallel()
                 .runOn(Schedulers.parallel())
@@ -51,7 +51,7 @@ public class Scheduler {
         // map1 - parallel scheduler and other mono, subs - elastic
         Flux.range(1, 3)
                 .map(n -> threadLog(n, "map1"))
-                .flatMap(n -> Mono.just(n).map(nn -> threadLog(nn, "mono")).subscribeOn(Schedulers.elastic()))
+                .flatMap(n -> Mono.just(n).map(nn -> threadLog(nn, "mono")).subscribeOn(Schedulers.boundedElastic()))
                 .subscribeOn(Schedulers.parallel())
                 .subscribe(n -> {
                     threadLog(n, "subs");

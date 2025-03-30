@@ -1,4 +1,4 @@
-package com.vg.webflux.client;
+package com.vg.webflux.example;
 
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class FluxTest {
     public static void main(String[] args) {
-        Flux<String> flux = Flux.just("red", "white", "blue","green");
+        Flux<String> flux = Flux.just("red", "white", "blue", "green");
 
         Flux<String> upper = flux
                 .map(String::toUpperCase);
@@ -29,8 +29,7 @@ public class FluxTest {
                 .subscribe(list -> System.out.print("List=" + list));
 
         // infinite flux every 100 ms new number
-//        Flux<Long> disposableFlux =
-                Flux.interval(Duration.ofMillis(100)).
+        Flux.interval(Duration.ofMillis(10)).
                 map(i -> "Tick : " + i)
                 .subscribe(System.out::println);
 
@@ -38,6 +37,15 @@ public class FluxTest {
         Disposable disposable = flux.log().parallel()
                 .runOn(Schedulers.parallel())
                 .subscribe(i -> System.out.println(i));
+
+        System.out.println("Before dispose");
+        try {
+            Thread.sleep(1000);
+            // stop infinite flux explicitly
+            disposable.dispose();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         // sequential execution of flux
@@ -48,20 +56,14 @@ public class FluxTest {
                         Thread.sleep(100);
                         System.out.println("After Thread.sleep n=" + n);
                         return Mono.just(n);
-                    } catch (InterruptedException e) { return Mono.error(e); }
+                    } catch (InterruptedException e) {
+                        return Mono.error(e);
+                    }
                 })
-                .map(n -> { System.out.println("In map n=" + n); return n; })
+                .map(n -> {
+                    System.out.println("In map n=" + n);
+                    return n;
+                })
                 .subscribe(System.out::println);
-
-
-
-        try {
-            Thread.sleep(1000);
-            // stop infinite flux explicitly
-            disposable.dispose();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println();
     }
 }

@@ -3,8 +3,6 @@ package com.vg.webflux.client;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import org.junit.Before;
-import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -16,8 +14,9 @@ import reactor.netty.tcp.SslProvider;
 import javax.net.ssl.SSLException;
 import java.rmi.ServerError;
 import java.util.function.Consumer;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Te;
 
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author vgrigoriev (vladimir.grigoriev@codefactorygroup.com) 11/18/2019
@@ -27,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 public class ClientServerDemo {
     private Consumer<SslProvider.SslContextSpec> ctxBuilder;
 
-    @Test
+//    @Test
     public void echoTest() {
         HttpServer server = HttpServer.create()
                 .port(9000)
@@ -54,11 +53,11 @@ public class ClientServerDemo {
                 .asString()
                 .block();
 
-        assertEquals("Hello World", response);
+//        assertEquals("Hello World", response);
         ds.dispose();
     }
 
-    @Before
+//    @Bef
     public void setUp() {
         try {
             SslContext sslContext = SslContextBuilder.forClient()

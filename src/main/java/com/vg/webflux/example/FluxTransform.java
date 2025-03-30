@@ -1,4 +1,4 @@
-package com.vg.webflux.client;
+package com.vg.webflux.example;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,9 +35,7 @@ public class FluxTransform {
             return str;
         }).subscribe(System.out::println);
 
-
         Flux.range(1, 10).take(5).subscribe(System.out::print);
-
 
     }
 }

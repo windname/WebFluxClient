@@ -18,9 +18,9 @@ import java.util.Map;
 
 public class IndexEventHandler {
     Map<Integer, Integer> originMap = new HashMap() {{
-        put(2,2);
-        put(3,1);
-        put(4,1000);
+        put(2, 2);
+        put(3, 1);
+        put(4, 1000);
     }};
 
     public Mono<ServerResponse> getIndex(ServerRequest request) {
