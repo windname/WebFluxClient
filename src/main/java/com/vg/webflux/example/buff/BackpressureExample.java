@@ -1,4 +1,4 @@
-package com.vg.webflux.example;
+package com.vg.webflux.example.buff;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -6,21 +6,20 @@ import reactor.core.publisher.Flux;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 public class BackpressureExample {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
         Flux<Integer> flux = Flux.range(1, 1000)
                 .delayElements(Duration.ofMillis(10));
 
         flux.subscribe(new DroppingBackpressureSubscriber(10));
 
+
         // Sleep to allow asynchronous processing to complete
-        try {
-            Thread.sleep(1000); // Adjust as needed
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        TimeUnit.SECONDS.sleep(1);
     }
 }
 

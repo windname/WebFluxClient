@@ -64,6 +64,10 @@ public class FluxNonTerminal {
                 .sequential()  // Merge back to single flux
                 .subscribe(System.out::println);
 
+        Mono<String> mono1 = Mono.just("One");
+        Mono<String> mono2 = Mono.just("Two");
+        mono1.zipWith(mono2).map(tuple -> tuple.getT1() + " zip " + tuple.getT2()).subscribe(System.out::println);
+
         try {
             Thread.sleep(100);
             blockingMerge();
